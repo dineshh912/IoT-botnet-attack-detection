@@ -54,3 +54,22 @@ def load_device_data(PATH, EXT):
     gafgyt_data = pd.concat(gafgyt_dfs, ignore_index=True)
 
     return benign_data, mirai_data, gafgyt_data
+
+
+def load_data(PATH, EXT, device):
+    try:
+        dfs = []
+        for path, subdir, files in os.walk(PATH):
+            for file in glob(os.path.join(path, EXT)):
+                if file.split('\\')[1] == device:
+                    data = pd.read_csv(file)
+                    data['label'] = file.split('\\')[2].split('_')[0]
+                    data['device'] = file.split('\\')[1]
+                    dfs.append(data)
+                        
+        device_data = pd.concat(dfs, ignore_index=True)
+        
+        return device_data
+        
+    except Exception as e:
+        return str(e)
