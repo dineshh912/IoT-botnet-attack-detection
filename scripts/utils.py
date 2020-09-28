@@ -73,3 +73,27 @@ def load_data(PATH, EXT, device):
         
     except Exception as e:
         return str(e)
+    
+
+def load_data_multi_label(PATH, EXT, device):
+    try:
+        dfs = []
+        for path, subdir, files in os.walk(PATH):
+            for file in glob(os.path.join(path, EXT)):
+                if file.split('\\')[1] == device:
+                    data = pd.read_csv(file)
+                    label = file.split('\\')
+                    if len(label) == 3:
+                        data['label'] = label[2].split('_')[0]
+                    else:
+                        data['label'] = label[2].split('_')[0] + '_' + label[3].split('.')[0]
+                    data['device'] = file.split('\\')[1]
+                    dfs.append(data)
+                        
+        device_data = pd.concat(dfs, ignore_index=True)
+        
+        return device_data
+        
+    except Exception as e:
+        return str(e)
+    
