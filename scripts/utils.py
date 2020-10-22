@@ -59,7 +59,7 @@ def load_device_data_v2(file_path, file_ext, device, labels=3, size=1):
                         sample_data = data.sample(frac=size)
                         dfs.append(sample_data)
                     else:
-                        dfs.append(dat)
+                        dfs.append(data)
 
         device_data = pd.concat(dfs, ignore_index = True)
 
